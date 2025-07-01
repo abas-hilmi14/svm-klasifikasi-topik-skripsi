@@ -33,6 +33,6 @@ if st.button("🔍 Prediksi Topik"):
     input_array = np.array(input_data).reshape(1, -1)
     scaled_input = scaler.transform(input_array)
     pred = model.predict(scaled_input)
-    label = label_encoder.inverse_transform(pred)
+    label = label_encoder.inverse_transform(pred)[0]
 
     st.success(f"Hasil prediksi topik skripsi: **{label}** 🎯")
