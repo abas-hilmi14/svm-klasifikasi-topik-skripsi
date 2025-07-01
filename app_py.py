@@ -26,7 +26,7 @@ st.write("Masukkan nilai mahasiswa pada 15 fitur terpilih untuk memprediksi topi
 # Form input nilai-nilai
 input_data = []
 for feature in selected_features:
-    val = st.number_input(f"{feature}", min_value=0.0, max_value=100.0, value=75.0)
+    val = st.number_input(f"{feature}", min_value=0, max_value=100, value=75, step=1)
     input_data.append(val)
 
 if st.button("🔍 Prediksi Topik"):
