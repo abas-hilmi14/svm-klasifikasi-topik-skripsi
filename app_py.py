@@ -18,17 +18,17 @@ selected_features = joblib.load("selected_features.pkl")
 st.subheader("🔢 Masukkan Nilai Mata Kuliah")
 user_input = {}
 for feature in selected_features:
-    user_input[feature] = st.number_input(f"{feature}", min_value=0, max_value=100,value=80, step=1)
+    user_input[feature] = st.number_input(f"{feature}", min_value=0, max_value=100, step=1)
 
 # Jika tombol prediksi ditekan
 if st.button("🔍 Prediksi Topik Skripsi"):
-    # Ambil inputan dan bentuk ke array
-    input_df = pd.DataFrame([user_input])
+    # Buat DataFrame dengan nama kolom sama persis
+    input_df = pd.DataFrame([[user_input[feature] for feature in selected_features]], columns=selected_features)
     
-    # Normalisasi Z-Score
+    # Transformasi Z-Score
     input_scaled = scaler.transform(input_df)
 
-    # Prediksi kelas
+    # Prediksi
     pred = model.predict(input_scaled)
     pred_label = label_encoder.inverse_transform(pred)[0]
 
