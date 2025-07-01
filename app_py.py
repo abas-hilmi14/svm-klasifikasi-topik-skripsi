@@ -36,3 +36,11 @@ if st.button("🔍 Prediksi Topik"):
     label = label_encoder.inverse_transform(pred)[0]
 
     st.success(f"Hasil prediksi topik skripsi: **{label}** 🎯")
+    st.write("➡️ Input array shape:", np.array([user_input]).shape)
+    st.write("➡️ Scaler expects:", scaler.n_features_in_)
+
+    st.write("🧪 selected_features:", selected_features)
+    st.write("🧪 Jumlah input user:", len(user_input))
+    st.write("🧪 Jumlah fitur di scaler:", scaler.n_features_in_)
+
+
