@@ -3,34 +3,27 @@ import numpy as np
 import pandas as pd
 import joblib
 
-# Judul aplikasi
-st.set_page_config(page_title="Klasifikasi Topik Skripsi", layout="centered")
-st.title("🚀 Klasifikasi Topik Skripsi Mahasiswa")
-st.markdown("Model klasifikasi berbasis **SVM + ADASYN + Z-Score + Information Gain**")
-
-# Load model dan komponen
-scaler = joblib.load("scaler.pkl")
+# Load model dan preprocessing
 model = joblib.load("model_svm.pkl")
+scaler = joblib.load("scaler.pkl")
 label_encoder = joblib.load("label_encoder.pkl")
 selected_features = joblib.load("selected_features.pkl")
 
-# Input manual
-st.subheader("🔢 Masukkan Nilai Mata Kuliah")
-user_input = {}
+st.set_page_config(page_title="Klasifikasi Topik Skripsi", layout="centered")
+
+st.title("🎓 Klasifikasi Topik Skripsi Mahasiswa PTIK")
+st.write("Masukkan nilai mahasiswa pada 15 fitur terpilih untuk memprediksi topik skripsi.")
+
+# Form input nilai-nilai
+input_data = []
 for feature in selected_features:
-    user_input[feature] = st.number_input(f"{feature}", min_value=0.0, max_value=100.0, step=0.1)
+    val = st.number_input(f"{feature}", min_value=0.0, max_value=100.0, value=75.0)
+    input_data.append(val)
 
-# Jika tombol prediksi ditekan
-if st.button("🔍 Prediksi Topik Skripsi"):
-    # Buat DataFrame input
-    input_df = pd.DataFrame([[user_input[feature] for feature in selected_features]], columns=selected_features)
-    
-    # Transformasi Z-Score (tanpa kolom)
-    input_scaled = scaler.transform(input_df.to_numpy())
+if st.button("🔍 Prediksi Topik"):
+    input_array = np.array(input_data).reshape(1, -1)
+    scaled_input = scaler.transform(input_array)
+    pred = model.predict(scaled_input)
+    label = label_encoder.inverse_transform(pred)[0]
 
-    # Prediksi
-    pred = model.predict(input_scaled)
-    pred_label = label_encoder.inverse_transform(pred)[0]
-
-    # Tampilkan hasil
-    st.success(f"📌 **Topik Skripsi Diprediksi: {pred_label}**")
+    st.success(f"Hasil prediksi topik skripsi: **{label}** 🎯")
